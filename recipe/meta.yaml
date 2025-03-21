@@ -14,7 +14,7 @@ source:
     sha256: dceede03550621e65ec7b79fcba87cf6dbb9d31132a8ae71a8fe8ceec0af7da3
 
 build:
-  number: 0
+  number: 1
   script:
     - mv LICENSE go-localereader-LICENSE
     - cd src
