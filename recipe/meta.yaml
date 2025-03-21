@@ -28,6 +28,9 @@ requirements:
   build:
     - {{ compiler('go-nocgo') }}
     - go-licenses
+  run:
+    - ffmpeg
+    - ttyd
 
 test:
   commands:
