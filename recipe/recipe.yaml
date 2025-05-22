@@ -2,22 +2,22 @@ schema_version: 1
 
 context:
   name: vhs
-  version: 0.7.2
+  version: 0.9.0
 
 package:
   name: ${{ name|lower }}
   version: ${{ version }}
 
 source:
-  - url: https://github.com/charmbracelet/${{ name }}/archive/refs/tags/v0.7.2.tar.gz
-    sha256: 9be4b88a638336f6bba913f391b0300549280246e08d26cbd5053b63c60ee40c
+  - url: https://github.com/charmbracelet/${{ name }}/archive/refs/tags/v${{ version }}.tar.gz
+    sha256: e8538a9019ddfa633ef7e0a6eb417b87fed0555d51b67dc59cb53493e179e20b
     target_directory: src
   # https://github.com/mattn/go-localereader/issues/2
   - url: https://github.com/mattn/go-localereader/raw/master/LICENSE
     sha256: dceede03550621e65ec7b79fcba87cf6dbb9d31132a8ae71a8fe8ceec0af7da3
 
 build:
-  number: 1
+  number: 0
   script:
     - mv LICENSE go-localereader-LICENSE
     - cd src
@@ -34,8 +34,19 @@ requirements:
   build:
     - ${{ compiler('go-nocgo') }}
     - go-licenses
+  run:
+    - ffmpeg
+    # ttyd is not available on those platforms yet
+    # https://github.com/conda-forge/ttyd-feedstock/pull/23
+    - if: not win and not (target_platform == 'linux-ppc64le')
+      then:
+        - ttyd
 
 tests:
+  - package_contents:
+      bin: vhs
+      # depends on https://github.com/prefix-dev/rattler-build/pull/1677
+      # strict: true
   - script:
       - vhs --version
 
