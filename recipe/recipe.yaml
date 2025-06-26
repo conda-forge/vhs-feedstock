@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: vhs
-  version: 0.9.0
+  version: "0.10.0"
 
 package:
   name: ${{ name|lower }}
@@ -10,7 +10,7 @@ package:
 
 source:
   - url: https://github.com/charmbracelet/${{ name }}/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: e8538a9019ddfa633ef7e0a6eb417b87fed0555d51b67dc59cb53493e179e20b
+    sha256: ae37fe7e52ade753f850ab81c7d5344f8e540ab6886f877bf5b613620c909893
     target_directory: src
   # https://github.com/mattn/go-localereader/issues/2
   - url: https://github.com/mattn/go-localereader/raw/master/LICENSE
@@ -24,9 +24,7 @@ build:
     - go-licenses save . --ignore github.com/mattn/go-localereader --save_path=../library_licenses
     - if: not win
       then: go build -v -o $PREFIX/bin/vhs
-    - if: win
-      then: go build -v -o %LIBRARY_BIN%\vhs.exe
-    # Clear out cache to avoid file not removable warnings
+      else: go build -v -o %LIBRARY_BIN%\vhs.exe
     - if: unix
       then: chmod -R u+w $(go env GOPATH) && rm -r $(go env GOPATH)
 
