@@ -17,16 +17,14 @@ source:
     sha256: dceede03550621e65ec7b79fcba87cf6dbb9d31132a8ae71a8fe8ceec0af7da3
 
 build:
-  number: 0
+  number: 1
   script:
     - mv LICENSE go-localereader-LICENSE
     - cd src
     - go-licenses save . --ignore github.com/mattn/go-localereader --save_path=../library_licenses
     - if: not win
-      then: go build -v -o $PREFIX/bin/vhs
-      else: go build -v -o %LIBRARY_BIN%\vhs.exe
-    - if: unix
-      then: chmod -R u+w $(go env GOPATH) && rm -r $(go env GOPATH)
+      then: go build -v -o $PREFIX/bin/vhs -ldflags="-s -w -X main.Version=${{ version }}"
+      else: go build -v -o %LIBRARY_BIN%\vhs.exe -ldflags="-s -w -X main.Version=${{ version }}"
 
 requirements:
   build:
@@ -43,10 +41,11 @@ requirements:
 tests:
   - package_contents:
       bin: vhs
-      # depends on https://github.com/prefix-dev/rattler-build/pull/1677
-      # strict: true
+      strict: true
   - script:
-      - vhs --version
+      - if: unix
+        then: vhs --version | grep "vhs version ${{ version | replace('.', '\\.') }}"
+        else: vhs --version
 
 about:
   summary: Your CLI home video recorder
