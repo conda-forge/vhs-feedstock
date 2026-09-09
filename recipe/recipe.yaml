@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: vhs
-  version: "0.11.0"
+  version: "0.12.0"
 
 package:
   name: ${{ name|lower }}
@@ -10,7 +10,7 @@ package:
 
 source:
   - url: https://github.com/charmbracelet/${{ name }}/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: c08b8502989fe7e9626c02938f3fc512c2a4ba21f839f455d20d7eb1da7bc39f
+    sha256: 2e4a3b940f66ffbe1f66ded3b6253c9f3185a69567596e80d08c50cee77eaedf
     target_directory: src
   # https://github.com/mattn/go-localereader/issues/2
   - url: https://github.com/mattn/go-localereader/raw/master/LICENSE
